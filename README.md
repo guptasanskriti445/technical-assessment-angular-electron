@@ -7,6 +7,9 @@ It visualizes real-time telemetry for:
 - Pressure
 - Temperature
 
+Open in StackBlitz:
+https://stackblitz.com/github/guptasanskriti445/technical-assessment-angular-electron
+
 Features
 - Live telemetry updates every second
 - Circular gauges and live trend graphs
