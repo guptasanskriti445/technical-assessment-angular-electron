@@ -1,0 +1,95 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Embedded Controller Monitor</p>
+      <h1>Technical Assessment – Angular</h1>
+    </div>
+
+    <div class="header-controls">
+      <span class="status-pill" [class.online]="connectionStatus === 'Connected'">
+        {{ connectionStatus }}
+      </span>
+      <button class="theme-toggle" (click)="toggleTheme()">
+        {{ darkMode ? 'Light Mode' : 'Dark Mode' }}
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="summary-strip">
+      <div class="summary-card">
+        <span>Last update</span>
+        <strong>{{ lastSuccessfulUpdate || 'Waiting...' }}</strong>
+      </div>
+      <div class="summary-card">
+        <span>System state</span>
+        <strong>{{ isLoading ? 'Loading' : 'Stable' }}</strong>
+      </div>
+      <div class="summary-card">
+        <span>Theme</span>
+        <strong>{{ darkMode ? 'Dark' : 'Light' }}</strong>
+      </div>
+    </section>
+
+    <section class="metrics-grid">
+      <article class="metric-card" *ngFor="let metricKey of metricKeys">
+        <div class="metric-header">
+          <div>
+            <p class="metric-label">{{ metrics[metricKey].name }}</p>
+            <div class="value-row">
+              <h2>{{ metrics[metricKey].value.toFixed(2) }}</h2>
+              <span>{{ metrics[metricKey].unit }}</span>
+            </div>
+          </div>
+
+          <span class="status-badge" [ngClass]="metrics[metricKey].status.toLowerCase()">
+            {{ metrics[metricKey].status }}
+          </span>
+        </div>
+
+        <div class="gauge-wrap">
+          <div class="gauge" [style.--progress]="getGaugeProgress(metricKey, metrics[metricKey].value)">
+            <div class="gauge-center">
+              <span>{{ metrics[metricKey].value.toFixed(1) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="unit-selector">
+          <label>Unit</label>
+          <select [value]="selectedUnits[metricKey]" (change)="onUnitChange(metricKey, $any($event.target).value)">
+            <option *ngFor="let unit of metricConfig[metricKey].options" [value]="unit">
+              {{ unit }}
+            </option>
+          </select>
+        </div>
+
+        <div class="chart-card">
+          <canvas
+            baseChart
+            [type]="'line' as ChartType"
+            [data]="metrics[metricKey].chartData"
+            [options]="chartOptions"
+          ></canvas>
+        </div>
+
+        <div class="meta-row">
+          <span>Updated: {{ metrics[metricKey].lastUpdated || 'n/a' }}</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="export-panel">
+      <button class="export-btn" (click)="exportCsv()">Export CSV</button>
+      <button class="export-btn primary" (click)="exportExcel()">Export Excel</button>
+    </section>
+
+    <div class="loading-state" *ngIf="isLoading">
+      <p>Loading live telemetry...</p>
+    </div>
+
+    <div class="error-state" *ngIf="errorMessage">
+      <p>{{ errorMessage }}</p>
+    </div>
+  </main>
+</div>

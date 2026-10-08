@@ -1,0 +1,46 @@
+{
+  "name": "controller-monitoring-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "ng": "ng",
+    "start": "concurrently \"npm run server\" \"npm run start:app\"",
+    "start:app": "ng serve --host 0.0.0.0 --port 4200",
+    "server": "node server/index.js",
+    "electron": "concurrently -k \"npm run server\" \"npm run start:app\" \"wait-on http://localhost:4200 && electron .\"",
+    "build": "ng build",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
+    "lint": "ng lint"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.0.0",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/platform-browser-dynamic": "^20.0.0",
+    "@angular/router": "^20.0.0",
+    "chart.js": "^4.4.3",
+    "concurrently": "^9.0.1",
+    "cors": "^2.8.5",
+    "electron": "^31.0.0",
+    "express": "^4.19.2",
+    "file-saver": "^2.0.1",
+    "ng2-charts": "^6.0.1",
+    "rxjs": "^7.6.0",
+    "tslib": "^2.6.0",
+    "wait-on": "^7.0.1",
+    "xlsx": "^0.18.5",
+    "zone.js": "^0.0.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.0.0",
+    "@angular/cli": "^20.0.0",
+    "@angular/compiler-cli": "^20.0.0",
+    "@types/file-saver": "^2.0.0",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  }
+}
