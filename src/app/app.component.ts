@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, interval, takeUntil } from 'rxjs';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -41,7 +41,7 @@ export interface TelemetryMetric {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, NgChartsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -82,7 +82,10 @@ export class AppComponent implements OnInit, OnDestroy {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.parsed.y.toFixed(2)} ${context.dataset.label ?? ''}`
+          label: (context: any) => {
+            const value = context.parsed?.y ?? 0;
+            return `${value.toFixed(2)} ${context.dataset.label ?? ''}`;
+          }
         }
       }
     },
